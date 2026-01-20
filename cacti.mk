@@ -7,22 +7,44 @@ ifndef NTHREADS
   NTHREADS = 8
 endif
 
+# Detect operating system
+UNAME_S := $(shell uname -s)
 
 LIBS = 
 INCS = -lm
 
 ifeq ($(TAG),dbg)
   DBG = -Wall 
-  OPT = -ggdb -g -O0 -DNTHREADS=1  -gstabs+
+  ifeq ($(UNAME_S),Darwin)
+    # macOS: clang doesn't support -gstabs+
+    OPT = -ggdb -g -O0 -DNTHREADS=1
+  else
+    # Linux: original flags
+    OPT = -ggdb -g -O0 -DNTHREADS=1 -gstabs+
+  endif
 else
   DBG = 
-  OPT = -g  -msse2 -mfpmath=sse -DNTHREADS=$(NTHREADS)
+  ifeq ($(UNAME_S),Darwin)
+    # macOS: clang doesn't support -msse2 -mfpmath=sse (especially on ARM)
+    OPT = -g -O3 -DNTHREADS=$(NTHREADS)
+  else
+    # Linux: original flags
+    OPT = -g -msse2 -mfpmath=sse -DNTHREADS=$(NTHREADS)
+  endif
 endif
 
 #CXXFLAGS = -Wall -Wno-unknown-pragmas -Winline $(DBG) $(OPT) 
 CXXFLAGS = -Wno-unknown-pragmas $(DBG) $(OPT) 
-CXX = g++ -m64
-CC  = gcc -m64
+
+ifeq ($(UNAME_S),Darwin)
+  # macOS: don't force -m64 (not needed, and problematic on ARM)
+  CXX = g++
+  CC  = gcc
+else
+  # Linux: original flags
+  CXX = g++ -m64
+  CC  = gcc -m64
+endif
 
 SRCS  = area.cc bank.cc mat.cc main.cc Ucache.cc io.cc technology.cc basic_circuit.cc parameter.cc \
 		decoder.cc component.cc uca.cc subarray.cc wire.cc htree2.cc extio.cc extio_technology.cc \
