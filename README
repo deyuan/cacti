@@ -19,6 +19,7 @@ This is a fork of CACTI that adds macOS compatibility, maintained by @deyuan.
 Changes include:
 * Build system fixes for clang/LLVM (auto-detects OS, preserves Linux behavior)
 * C++ standard compliance fixes for modern compilers
+* Wrapper script cacti.sh to run cacti from any directory or via symlink
 
 Original repository: https://github.com/HewlettPackard/cacti
 
