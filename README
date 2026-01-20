@@ -13,6 +13,17 @@
 A Tool to Model Caches/Memories, 3D stacking, and off-chip IO
 -----------------------------------------------------------
 
+macOS Fork
+==========
+This is a fork of CACTI that adds macOS compatibility, maintained by @deyuan.
+Changes include:
+* Build system fixes for clang/LLVM (auto-detects OS, preserves Linux behavior)
+* C++ standard compliance fixes for modern compilers
+
+Original repository: https://github.com/HewlettPackard/cacti
+
+-----------------------------------------------------------
+
 CACTI is an analytical tool that takes a set of cache/memory para-
 meters as input and calculates its access time, power, cycle 
 time, and area.
