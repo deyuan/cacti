@@ -390,28 +390,30 @@ void find_all_bobs(MemCadParameters * memcad_params)
 	}
 	else if(memcad_params->same_bw_in_bob)
 	{
-		sort(memcad_all_channels->begin(), memcad_all_channels->end(), compare_channels_bw); 
-		vector<int> start_index; start_index.push_back(0);
-		vector<int> end_index;
-		int last_bw =(*memcad_all_channels)[0]->bandwidth;
-		for(unsigned int i=0;i< memcad_all_channels->size();i++)
+		if(!memcad_all_channels->empty())
 		{
-			if(last_bw!=(*memcad_all_channels)[i]->bandwidth)
+			sort(memcad_all_channels->begin(), memcad_all_channels->end(), compare_channels_bw); 
+			vector<int> start_index; start_index.push_back(0);
+			vector<int> end_index;
+			int last_bw =(*memcad_all_channels)[0]->bandwidth;
+			for(unsigned int i=0;i< memcad_all_channels->size();i++)
 			{
-				end_index.push_back(i-1);
-				start_index.push_back(i);
-				last_bw = (*memcad_all_channels)[i]->bandwidth;
+				if(last_bw!=(*memcad_all_channels)[i]->bandwidth)
+				{
+					end_index.push_back(i-1);
+					start_index.push_back(i);
+					last_bw = (*memcad_all_channels)[i]->bandwidth;
+				}
+			}
+			end_index.push_back(memcad_all_channels->size()-1);
+
+			list<int> channel_index;
+
+			for(unsigned int i=0;i< start_index.size();++i)
+			{
+				find_bobs_recursive(memcad_params,start_index[i],end_index[i],memcad_params->num_channels_per_bob, &channel_index);
 			}
 		}
-		end_index.push_back(memcad_all_channels->size()-1);
-		
-		list<int> channel_index;
-		
-		for(unsigned int i=0;i< start_index.size();++i)
-		{
-			find_bobs_recursive(memcad_params,start_index[i],end_index[i],memcad_params->num_channels_per_bob, &channel_index);	
-		}
-		
 	}
 	else
 	{
