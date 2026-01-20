@@ -829,6 +829,10 @@ void TechnologyParameter::assign_tsv(const string & in_file)
 			tsv_type = g_ip->tsv_os_bank_type;
 		}
 		fp = fopen(in_file.c_str(), "r");
+		if (!fp) {
+			cout << in_file << " is missing!\n";
+			exit(1);
+		}
 		while(fscanf(fp, "%[^\n]\n", line) != EOF) 
 		{
 			if (!strncmp("-tsv_pitch", line, strlen("-tsv_pitch"))) 
@@ -927,6 +931,10 @@ void TechnologyParameter::init(double technology, bool is_tag)
 	}
 	
 	fp = fopen(in_file_lo.c_str(), "r");
+	if (!fp) {
+		cout << in_file_lo << " is missing!\n";
+		exit(1);
+	}
 	dram_cell_I_on = 0;
 	dram_cell_Vdd = 0;
 	dram_cell_C = 0;
@@ -1115,6 +1123,10 @@ void TechnologyParameter::init(double technology, bool is_tag)
 	
 	
 	fp = fopen(in_file_hi.c_str(), "r");
+	if (!fp) {
+		cout << in_file_hi << " is missing!\n";
+		exit(1);
+	}
 	
 	while(fscanf(fp, "%[^\n]\n", line) != EOF) 
 	{
