@@ -1,0 +1,16 @@
+# Build artifacts
+obj_dbg/
+obj_opt/
+*.o
+*.d
+
+# Binary
+cacti
+
+# Output files
+*.cfg.out
+
+# Editor files
+*.swp
+*~
+.DS_Store
