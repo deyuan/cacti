@@ -51,6 +51,8 @@ int main(int argc,char *argv[])
 {
 
   uca_org_t result;
+  bool print_tech_params = false;
+
   if (argc != 53 && argc != 55 && argc !=64)
   {
     bool infile_specified = false;
@@ -64,11 +66,15 @@ int main(int argc,char *argv[])
         i++;
         infile_name = argv[i];
       }
+      if (argv[i] == string("-print_tech_params"))
+      {
+        print_tech_params = true;
+      }
     }
     if (infile_specified == false)
     {
       cerr << " Invalid arguments -- how to use CACTI:" << endl;
-      cerr << "  1) cacti -infile <input file name>" << endl;
+      cerr << "  1) cacti -infile <input file name> [-print_tech_params]" << endl;
       cerr << "  2) cacti arg1 ... arg52 -- please refer to the README file" << endl;
       cerr << " No. of arguments input - " << argc << endl;
       exit(1);
@@ -258,7 +264,9 @@ int main(int argc,char *argv[])
   }
 
   cout << "=============================================\n\n";
- // print_g_tp(); //function to test technology paramters.
+  if (print_tech_params) {
+    print_g_tp();
+  }
 //  g_tp.display();
   result.cleanup();
 //  delete result.data_array2;
